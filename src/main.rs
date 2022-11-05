@@ -27,14 +27,14 @@ pub fn parse_bool_expr(expression: String) -> bool {
     if expression.eq("f") {
         return false;
     }
-    let mut stack = vec![];
+    let mut s = vec![];
     for c in expression.as_bytes() {
         if *c != b',' && *c != b')' {
-            stack.push(*c);
+            s.push(*c);
         } else if *c == b')' {
             let (mut true_count, mut false_count) = (0, 0);
-            while !stack.is_empty() {
-                let temp = stack.pop().unwrap();
+            while !s.is_empty() {
+                let temp = s.pop().unwrap();
                 if temp == b'(' {
                     break;
                 } else if temp == b't' {
@@ -43,28 +43,28 @@ pub fn parse_bool_expr(expression: String) -> bool {
                     false_count += 1;
                 }
             }
-            let operator = stack.pop().unwrap();
+            let operator = s.pop().unwrap();
             if operator == b'!' {
                 if false_count == 1 {
-                    stack.push(b't');
+                    s.push(b't');
                 } else {
-                    stack.push(b'f');
+                    s.push(b'f');
                 }
             } else if operator == b'&' {
                 if false_count == 0 {
-                    stack.push(b't');
+                    s.push(b't');
                 } else {
-                    stack.push(b'f');
+                    s.push(b'f');
                 }
             } else if operator == b'|' {
                 if true_count > 0 {
-                    stack.push(b't');
+                    s.push(b't');
                 } else {
-                    stack.push(b'f');
+                    s.push(b'f');
                 }
             }
         }
     }
-    let result = stack.pop().unwrap();
+    let result = s.pop().unwrap();
     if result == b't' { true } else { false }
 }
