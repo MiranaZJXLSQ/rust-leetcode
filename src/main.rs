@@ -6,7 +6,8 @@ fn main() {
     println!("student {}", Student(3));
     // 这种 :? 的姿势需要实现Debug接口
     println!("student {:?}", Student(3));
-    println!("parse_bool_expr {}", parse_bool_expr(String::from("f")))
+    println!("parse_bool_expr {}", parse_bool_expr(String::from("f")));
+    println!("interpret {}", interpret(String::from("G()(al)")));
 }
 
 #[derive(Debug)]
@@ -67,4 +68,8 @@ pub fn parse_bool_expr(expression: String) -> bool {
     }
     let result = s.pop().unwrap();
     if result == b't' { true } else { false }
+}
+
+pub fn interpret(command: String) -> String {
+    command.replace("()", "o").replace("(al)", "al")
 }
