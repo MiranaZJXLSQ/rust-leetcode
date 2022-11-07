@@ -8,6 +8,7 @@ fn main() {
     println!("student {:?}", Student(3));
     println!("parse_bool_expr {}", parse_bool_expr(String::from("f")));
     println!("interpret {}", interpret(String::from("G()(al)")));
+    println!("result is {:?}", ambiguous_coordinates(String::from("(123)")));
 }
 
 #[derive(Debug)]
@@ -72,4 +73,40 @@ pub fn parse_bool_expr(expression: String) -> bool {
 
 pub fn interpret(command: String) -> String {
     command.replace("()", "o").replace("(al)", "al")
+}
+
+pub fn ambiguous_coordinates(s: String) -> Vec<String> {
+    let mut ret = vec![];
+
+    for i in 2..s.len() - 1 {
+        for x in possibilites(s.get(1..i).unwrap()) {
+            for y in possibilites(s.get(i..s.len() - 1).unwrap()) {
+                ret.push(format!("({}, {})", x, y));
+            }
+        }
+    }
+
+    ret
+}
+
+pub fn possibilites(s: &str) -> Vec<String> {
+    let mut ret = vec![];
+
+    if s == "0" || !s.starts_with('0') {
+        ret.push(s.to_string());
+    }
+    for i in 1..s.len() {
+        let x = format!("{}.{}", s.get(..i).unwrap(), s.get(i..).unwrap());
+        if validity(&x) {
+            ret.push(x);
+        }
+    }
+
+    ret
+}
+
+pub fn validity(s: &str) -> bool {
+    let vec = s.split('.').collect::<Vec<_>>();
+
+    (vec[0] == "0" || !vec[0].starts_with('0')) && !vec[1].ends_with('0')
 }
