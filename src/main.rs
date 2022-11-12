@@ -110,3 +110,8 @@ pub fn validity(s: &str) -> bool {
 
     (vec[0] == "0" || !vec[0].starts_with('0')) && !vec[1].ends_with('0')
 }
+
+pub fn halves_are_alike(s: String) -> bool {
+    let (s_arr, ch_arr) = (s.chars().collect::<Vec<_>>(), vec!['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']);
+    s_arr[..s.len() / 2].iter().filter(|ch| ch_arr.contains(ch)).count() == s_arr[s.len() / 2..].iter().filter(|ch| ch_arr.contains(ch)).count()
+}
