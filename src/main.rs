@@ -1,4 +1,5 @@
 use std::fmt;
+use std::collections::HashMap;
 
 fn main() {
     println!("Hello, world!");
@@ -114,4 +115,27 @@ pub fn validity(s: &str) -> bool {
 pub fn halves_are_alike(s: String) -> bool {
     let (s_arr, ch_arr) = (s.chars().collect::<Vec<_>>(), vec!['a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U']);
     s_arr[..s.len() / 2].iter().filter(|ch| ch_arr.contains(ch)).count() == s_arr[s.len() / 2..].iter().filter(|ch| ch_arr.contains(ch)).count()
+}
+
+pub fn custom_sort_string(order: String, s: String) -> String {
+    let mut mmp = HashMap::new();
+    let order_chars = order.chars().collect::<Vec<char>>();
+    for c in &order_chars {
+        mmp.entry(*c).or_insert(Vec::new());
+    }
+    for c in s.chars().collect::<Vec<char>>() {
+        mmp.entry(c).or_insert(Vec::new()).push(c.to_string());
+    }
+    let mut ret = String::new();
+    for c in order_chars {
+        let tmp = mmp.get(&c);
+        if tmp != None {
+            ret.push_str(&tmp.unwrap().join(""));
+            mmp.remove(&c);
+        }
+    }
+    for (_, v) in mmp {
+        ret.push_str(&v.join(""));
+    }
+    ret
 }
