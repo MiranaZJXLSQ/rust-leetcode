@@ -139,3 +139,20 @@ pub fn custom_sort_string(order: String, s: String) -> String {
     }
     ret
 }
+
+pub fn split_array_same_average(nums: Vec<i32>) -> bool {
+    let (sum, n) = (nums.iter().sum::<i32>(), nums.len());
+    let mut dp = vec![0; sum as usize + 1];
+    dp[0] = 1;
+    for num in nums {
+        for s in (num..=sum).rev() {
+            if dp[(s - num) as usize] > 0 { dp[s as usize] |= (dp[(s - num) as usize] << 1); }
+        }
+    }
+    for i in 1..n {
+        if sum * i as i32 % n as i32 != 0 { continue; }
+        let s = sum * i as i32 / n as i32;
+        if dp[s as usize] > 0 && (dp[s as usize] & (1 << i as i32)) > 0 { return true; }
+    }
+    false
+}
