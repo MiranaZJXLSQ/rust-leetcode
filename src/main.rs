@@ -156,3 +156,12 @@ pub fn split_array_same_average(nums: Vec<i32>) -> bool {
     }
     false
 }
+
+pub fn is_ideal_permutation(nums: Vec<i32>) -> bool {
+    let mut maximum = 0;
+    for i in 2..nums.len() {
+        maximum = maximum.max(nums[i - 2]);
+        if maximum > nums[i] { return false; }
+    }
+    true
+}
