@@ -165,3 +165,26 @@ pub fn is_ideal_permutation(nums: Vec<i32>) -> bool {
     }
     true
 }
+
+pub fn num_matching_subseq(s: String, words: Vec<String>) -> i32 {
+    let words = words
+        .into_iter()
+        .map(|v| v.into_bytes())
+        .collect::<Vec<_>>();
+    let mut heads = vec![vec![]; 26];
+    for word in &words {
+        heads[(word[0] - b'a') as usize].push(&word[1..]);
+    }
+    let mut res = 0;
+    for ch in s.bytes() {
+        let tails = std::mem::take(&mut heads[(ch - b'a') as usize]);
+        for tail in tails {
+            if tail.is_empty() {
+                res += 1;
+            } else {
+                heads[(tail[0] - b'a') as usize].push(&tail[1..]);
+            }
+        }
+    }
+    return res;
+}
