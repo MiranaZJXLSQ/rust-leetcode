@@ -188,3 +188,18 @@ pub fn num_matching_subseq(s: String, words: Vec<String>) -> i32 {
     }
     return res;
 }
+
+pub fn sum_subseq_widths(mut nums: Vec<i32>) -> i32 {
+    nums.sort();
+
+    let n = nums.len();
+    let mut ans = 0;
+    let mut k = 1;
+
+    for i in 0..n {
+        ans = (ans + nums[i] as i64 * k - nums[n - i - 1] as i64 * k) % 1_000_000_007;
+        k = k * 2 % 1_000_000_007;
+    }
+
+    ans as i32
+}
