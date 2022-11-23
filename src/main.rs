@@ -203,3 +203,18 @@ pub fn sum_subseq_widths(mut nums: Vec<i32>) -> i32 {
 
     ans as i32
 }
+
+pub fn count_balls(low_limit: i32, high_limit: i32) -> i32 {
+    let mut counts = vec![0; 46];
+    let mut max = 0;
+    for mut i in low_limit..=high_limit {
+        let mut sum = 0;
+        while i > 0 {
+            sum += i % 10;
+            i /= 10;
+        }
+        counts[sum as usize] += 1;
+        max = max.max(counts[sum as usize]);
+    }
+    return max;
+}
